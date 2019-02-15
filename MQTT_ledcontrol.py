@@ -1,9 +1,9 @@
 import paho.mqtt.client as mqtt
 import mraa
 
-
-led1 = mraa.Gpio(2)    
-led2 = mraa.Gpio(13)   
+mraa.addSubplatform(mraa.GROVEPI, "0")
+led1 = mraa.Gpio(516) 
+led2 = mraa.Gpio(517)
 led1.dir(mraa.DIR_OUT) 
 led2.dir(mraa.DIR_OUT)
 
@@ -36,14 +36,11 @@ def on_message(client, userdata, msg):
 
 #main program
 client = mqtt.Client()
-client.on_connect = on_connect   # configure callback (from when the connection$
-client.on_message = on_message   # set callback (from when a message is receive$
+client.on_connect = on_connect   
+client.on_message = on_message   
 
 client.connect("test.mosquitto.org", 1883, 60)
-# tries to connect to the broker on port 1883 (the parameter '60' is the
-# keepalive time). In that case, if no message is transmitted within 60
-# seconds, you have pinged the broker from time to time (to keep the
-# connection active
+
 
 # Endless loop waiting to receive messages. .
 client.loop_forever()
