@@ -5,9 +5,9 @@ import sys
 import paho.mqtt.client as mqtt
 import json
 
-INTERVAL=2
+delay1=2
 sensor_data = {'temperature': 0, 'humidity': 0}
-next_reading = time.time()
+next1 = time.time()
 client = mqtt.Client()
 
 client.connect("test.mosquitto.org", 1883, 60)
@@ -21,15 +21,15 @@ try:
         sensor=temp.read()
         hum=mraa.Aio(513)
         humidity=temp.read()
-	print("Time: {}, Temperature: {},Humidity: {}" .format(next_reading, sensor)
+	print("Time: {}, Temperature: {},Humidity: {}" .format(next1, sensor, humidity))
         sensor_data['temperature'] = sensor
         sensor_data['humidity'] = humidity
 
         # Sending humidity and temperature data to ThingsBoard
         client.publish('MQTTUP2', json.dumps(sensor_data))
 
-        next_reading += INTERVAL
-        sleep_time = next_reading-time.time()
+        next1 = next1+delay1
+        sleep_time = next1-time.time()
         if sleep_time > 0:
 		time.sleep(sleep_time)
 except KeyboardInterrupt:
